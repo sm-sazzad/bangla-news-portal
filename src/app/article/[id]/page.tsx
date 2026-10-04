@@ -1,3 +1,4 @@
+import { url } from "inspector";
 import Image from "next/image";
 
 export interface IDataType {
@@ -57,16 +58,28 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const resData = await res.json();
   // console.log(resData, "from id");
   const data: IDataType = resData.data;
+  console.log(data, "details");
   return (
     <div className="w-[80%] mx-auto">
-      {data.title}{" "}
-      <Image
-        src={data.imageUrl}
-        alt={data.title}
-        width={400}
-        height={400}
-      ></Image>
-      <p>{data.text}</p>
+      <h1 className="text-3xl font-bold my-5 mb-20">{data.title}</h1>
+      {data.body.map((n, indx) => (
+        <div key={indx}>
+          {n.url && (
+            <Image
+              className="w-full h-auto my-5"
+              src={n.url!}
+              alt={n.altText!}
+              width={n.width}
+              height={n.height}
+            ></Image>
+          )}
+          <h1
+            className={`${n.type === "subheading" ? "text-2xl font-bold text-red-600 my-4" : "my-2"}`}
+          >
+            {n.text}
+          </h1>
+        </div>
+      ))}
     </div>
   );
 };
