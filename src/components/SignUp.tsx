@@ -12,7 +12,7 @@ const SignUp = () => {
           <Link href={"/profile"}>
             {session?.data?.user?.image ? (
               <Image
-                className="h-12 w-12 rounded-full p-px ring ring-red-600"
+                className="h-12 w-12 object-cover rounded-full p-px ring ring-red-600"
                 src={session?.data?.user?.image}
                 alt={session?.data?.user?.name}
                 height={50}
