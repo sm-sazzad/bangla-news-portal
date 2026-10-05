@@ -16,11 +16,11 @@ const NavLinks = async () => {
     }
 
     const resData = await res.json();
-    console.log(resData.data);
+    // console.log(resData.data);
     const nav: ICategory[] = resData.data;
 
     const navs = nav.filter((n) => n.scrapable);
-    console.log(navs);
+    // console.log(navs);
 
     return (
       <div className="flex items-center justify-center gap-6 border-t border-gray-100 py-1 text-[14px] font-medium text-gray-700">

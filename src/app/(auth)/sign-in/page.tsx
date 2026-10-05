@@ -1,4 +1,5 @@
 "use client";
+import GoogleSignIn from "@/components/GoogleSignIn";
 import { signIn } from "@/lib/auth-client";
 import React from "react";
 import toast from "react-hot-toast";
@@ -88,6 +89,7 @@ const SignIn = () => {
             </button>
           </div>
         </form>
+        <GoogleSignIn />
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-500">

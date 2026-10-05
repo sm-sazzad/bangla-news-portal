@@ -1,4 +1,5 @@
 "use client";
+import GoogleSignIn from "@/components/GoogleSignIn";
 import { signUp } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -16,7 +17,7 @@ const SignUp = () => {
       password: String(userData.password),
       image: String(userData.image),
     });
-
+    console.log(data, error);
     if (error) {
       toast.error("Sign Up Failed", {
         style: {
@@ -36,7 +37,7 @@ const SignUp = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-red-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-red-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
         {/* Header */}
         <div className="mb-8 text-center">
@@ -123,6 +124,7 @@ const SignUp = () => {
             সাইন আপ
           </button>
         </form>
+        <GoogleSignIn />
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-500">

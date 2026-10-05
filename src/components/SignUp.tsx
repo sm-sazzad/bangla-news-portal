@@ -9,17 +9,19 @@ const SignUp = () => {
     <div className="absolute right-0 flex items-center gap-3">
       {session?.data?.user ? (
         <>
-          {session?.data?.user?.image ? (
-            <Image
-              className="h-12 w-12 rounded-full p-px ring ring-red-600"
-              src={session?.data?.user?.image}
-              alt={session?.data?.user?.name}
-              height={50}
-              width={50}
-            />
-          ) : (
-            <h1>{session?.data?.user?.name}</h1>
-          )}
+          <Link href={"/profile"}>
+            {session?.data?.user?.image ? (
+              <Image
+                className="h-12 w-12 rounded-full p-px ring ring-red-600"
+                src={session?.data?.user?.image}
+                alt={session?.data?.user?.name}
+                height={50}
+                width={50}
+              />
+            ) : (
+              <h1>{session?.data?.user?.name}</h1>
+            )}
+          </Link>
           <button
             onClick={() => signOut()}
             className="rounded-md border bg-red-700 text-white border-gray-300 px-4 py-2 text-sm font-medium  transition cursor-pointer "

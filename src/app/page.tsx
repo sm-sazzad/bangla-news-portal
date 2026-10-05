@@ -1,7 +1,7 @@
 import HomepageCard from "@/components/HomepageCard";
-import NewsCard from "@/components/NewsCard";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface ISection {
   title: string;
@@ -40,32 +40,57 @@ const date = (d: string) => {
     minute: "numeric",
     hour12: true,
   }).format(date);
+
   return formatted;
 };
 
 export default async function Home() {
-  const res = await fetch(`https://news-api-v2.vercel.app/api/news/sections`);
+  let article: ISection[] = [];
+  let readData: { data: IReadData[] } = { data: [] };
 
-  const resData = await res.json();
-  let article: ISection[] = resData.data;
-  article = article.filter((n) => n.count !== 1 && n.count !== 6);
+  try {
+    const res = await fetch("https://news-api-v2.vercel.app/api/news/sections");
+
+    if (!res.ok) {
+      notFound();
+    }
+
+    const resData = await res.json();
+
+    article = resData.data;
+    article = article.filter((n) => n.count !== 1 && n.count !== 6);
+  } catch (error) {
+    console.error("News sections API Error:", error);
+    notFound();
+  }
+
+  try {
+    const resRead = await fetch(
+      "https://news-api-v2.vercel.app/api/news/most-read",
+    );
+
+    if (!resRead.ok) {
+      notFound();
+    }
+
+    readData = await resRead.json();
+  } catch (error) {
+    console.error("Most read API Error:", error);
+    notFound();
+  }
+
   const [mainNews, ...othersNews] = article;
+
   const firstCard = mainNews.articles[0];
   const otherCard = mainNews.articles.slice(1, 6);
 
-  // most read news
-  const resRead = await fetch(
-    "https://news-api-v2.vercel.app/api/news/most-read",
-  );
-  const readData = await resRead.json();
-  console.log(readData);
   return (
     <div className="grid grid-cols-3 gap-3 w-[80%] mx-auto my-5">
       <div className="col-span-2">
-        <div className=" grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-2 gap-5">
           {/* first News */}
           <Link href={`/article/${firstCard.id}`}>
-            <div className=" overflow-hidden rounded-lg border border-gray-200 bg-white">
+            <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
               <Image
                 className="h-40 w-full object-cover"
                 src={firstCard.imageUrl}
@@ -102,14 +127,12 @@ export default async function Home() {
 
           {/* second News */}
           <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-            {/* Section Header */}
             <div className="border-b-2 border-red-700 px-5 py-1">
               <h1 className="text-lg font-bold text-gray-900">
                 {mainNews.title}
               </h1>
             </div>
 
-            {/* News List */}
             <div>
               {otherCard.map((n, index) => (
                 <div
@@ -131,15 +154,18 @@ export default async function Home() {
             </div>
           </div>
         </div>
+
         <div className="my-5">
           {othersNews.map((n) => (
             <div key={n.title}>
-              <h1 className="font-bold text-2xl py-2 text-red-700">
+              <h1 className="py-2 text-2xl font-bold text-red-700">
                 {n.title}
               </h1>
+
               <div className="border-b-2 border-b-red-700"></div>
+
               <div>
-                <HomepageCard key={n.title} homepageCard={n.articles} />
+                <HomepageCard homepageCard={n.articles} />
               </div>
             </div>
           ))}
@@ -150,10 +176,11 @@ export default async function Home() {
         <div className="border-b-2 border-red-700 px-5 py-1">
           <h1 className="text-lg font-bold text-gray-900">সর্বাধিক পঠিত</h1>
         </div>
-        {(readData.data as IReadData[]).map((n) => (
+
+        {readData.data.map((n) => (
           <div
             key={n.id}
-            className="py-3 px-3 hover:bg-red-50 border-b border-gray-100"
+            className="border-b border-gray-100 px-3 py-3 hover:bg-red-50"
           >
             <Link href={`/article/${n.id}`}>{n.title}</Link>
           </div>
