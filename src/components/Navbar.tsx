@@ -1,5 +1,5 @@
-import React from "react";
 import NavLinks from "./NavLinks";
+import SignUp from "./SignUp";
 
 const Navbar = () => {
   const date = new Date();
@@ -24,15 +24,7 @@ const Navbar = () => {
         </div>
 
         {/* Auth Buttons */}
-        <div className="absolute right-0 flex items-center gap-3">
-          <button className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-red-700 hover:text-red-700">
-            সাইন ইন
-          </button>
-
-          <button className="rounded-md bg-red-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-800">
-            সাইন আপ
-          </button>
-        </div>
+        <SignUp />
       </div>
 
       {/* Navigation */}

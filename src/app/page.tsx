@@ -45,9 +45,6 @@ const date = (d: string) => {
 
 export default async function Home() {
   const res = await fetch(`https://news-api-v2.vercel.app/api/news/sections`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
 
   const resData = await res.json();
   let article: ISection[] = resData.data;

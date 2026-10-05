@@ -1,5 +1,6 @@
 import { url } from "inspector";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 export interface IDataType {
   id: string;
@@ -28,37 +29,17 @@ export interface IDataType {
   text: string;
   wordCount: number;
 }
-// export interface Byline {
-//   name: string;
-//   role: any;
-// }
-// export interface Topic {
-//   id: string;
-//   name: string;
-// }
-
-// export interface Body {
-//   type: string;
-//   url?: string;
-//   width?: number;
-//   height?: number;
-//   caption?: string;
-//   altText?: string;
-//   copyrightHolder?: string;
-//   text?: string;
-// }
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const res = await fetch(`https://news-api-v2.vercel.app/api/article/${id}`);
+
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    notFound();
   }
 
   const resData = await res.json();
-  // console.log(resData, "from id");
   const data: IDataType = resData.data;
-  console.log(data, "details");
   return (
     <div className="w-[80%] mx-auto">
       <h1 className="text-3xl font-bold my-5 mb-20">{data.title}</h1>

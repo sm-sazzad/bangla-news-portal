@@ -1,6 +1,36 @@
+"use client";
+import { signIn } from "@/lib/auth-client";
 import React from "react";
+import toast from "react-hot-toast";
 
 const SignIn = () => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const userData = Object.fromEntries(formData.entries());
+
+    const { data, error } = await signIn.email({
+      email: String(userData.email),
+      password: String(userData.password),
+      callbackURL: "/",
+    });
+    if (error) {
+      toast.error("Sign in Failed", {
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    }
+    if (data) {
+      toast.success("Sign in Successfull!", {
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    }
+  };
   return (
     <div className="min-h-[80vh] bg-linear-to-br from-slate-950 via-slate-900 to-red-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
@@ -12,32 +42,14 @@ const SignIn = () => {
           </p>
         </div>
 
-        <form action="" className="space-y-5">
-          {/* Name */}
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-
-            <input
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Enter your name"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-red-500 focus:ring-2 focus:ring-red-100"
-            />
-          </div>
-
+        <form onSubmit={handleSubmit} action="" className="space-y-5">
           {/* Email */}
           <div>
             <label
               htmlFor="email"
               className="mb-2 block text-sm font-medium text-gray-700"
             >
-              Email
+              ই-মেইল
             </label>
 
             <input
@@ -45,6 +57,23 @@ const SignIn = () => {
               name="email"
               id="email"
               placeholder="you@example.com"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-red-500 focus:ring-2 focus:ring-red-100"
+            />
+          </div>
+          {/* Name */}
+          <div>
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-gray-700"
+            >
+              পাসওয়ার্ড
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Enter your password"
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-red-500 focus:ring-2 focus:ring-red-100"
             />
           </div>
@@ -62,12 +91,12 @@ const SignIn = () => {
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-500">
-          Don't have an account?{" "}
+          আপনার কি একাউন্ট আছে?{" "}
           <a
             href="/sign-up"
             className="font-semibold text-red-600 hover:text-red-700"
           >
-            Sign Up
+            সাইন আপ
           </a>
         </p>
       </div>

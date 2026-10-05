@@ -1,8 +1,42 @@
+"use client";
+import { signUp } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 import React from "react";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const userData = Object.fromEntries(formData.entries());
+
+    const { data, error } = await signUp.email({
+      name: String(userData.name),
+      email: String(userData.email),
+      password: String(userData.password),
+      image: String(userData.image),
+    });
+
+    if (error) {
+      toast.error("Sign Up Failed", {
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    }
+    if (data) {
+      toast.success("Sign Up Successfull!", {
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      redirect("/");
+    }
+  };
   return (
-    <div className="min-h-[80vh] bg-linear-to-br from-slate-950 via-slate-900 to-red-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-red-950 flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl">
         {/* Header */}
         <div className="mb-8 text-center">
@@ -12,7 +46,7 @@ const SignUp = () => {
           </p> */}
         </div>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Name */}
           <div>
             <label
@@ -36,7 +70,7 @@ const SignUp = () => {
               htmlFor="email"
               className="mb-2 block text-sm font-medium text-gray-700"
             >
-              ই-মেল
+              ই-মেইল
             </label>
             <input
               type="email"
@@ -92,7 +126,7 @@ const SignUp = () => {
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-500">
-          আপনার কি অ্যাকাউন্ট আছে?{" "}
+          আমার অ্যাকাউন্ট আছে?{" "}
           <a
             href="/sign-in"
             className="font-semibold text-red-600 hover:text-red-700"
